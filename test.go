@@ -17,7 +17,7 @@ import (
 func main() {
 
 	start := time.Now()
-	f, _ := os.Open("car.data")
+	f, _ := os.Open("diabetes.csv")
 	defer f.Close()
 	content, _ := ioutil.ReadAll(f)
 	s_content := string(content)
@@ -66,6 +66,12 @@ func main() {
 		}
 	}
 
+	fmt.Println("train size:", len(train_inputs))
+	fmt.Println("feature size:", len(train_inputs[0]))
+	/*fmt.Println("feature:", train_inputs)
+	fmt.Println("Inputs:", inputs)
+	fmt.Println("Targets:", targets)*/
+
 	forest := RF.BuildForest(inputs, targets, 10, 500, len(train_inputs[0])) //100 trees
 
 	test_inputs = train_inputs
@@ -83,4 +89,8 @@ func main() {
 
 	fmt.Println(time.Since(start))
 
+	//fmt.Println("Test Inputs:", test_inputs[1000])
+	//Probar introduciendo un nuevo dato Female,53.0,0,0,former,27.32,7.0,159,1
+	fmt.Println("Prediction:", forest.Predicate([]interface{}{"Female", "53.0", "0", "0", "former", "27.32", "7.0", "159", "1"}))
+	//fmt.Println("Prediction:", forest.Predicate(test_inputs[2]))
 }
