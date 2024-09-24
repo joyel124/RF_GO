@@ -1,8 +1,10 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"io/ioutil"
+	"strconv"
 	"strings"
 
 	//"strconv"
@@ -66,12 +68,6 @@ func main() {
 		}
 	}
 
-	fmt.Println("train size:", len(train_inputs))
-	fmt.Println("feature size:", len(train_inputs[0]))
-	/*fmt.Println("feature:", train_inputs)
-	fmt.Println("Inputs:", inputs)
-	fmt.Println("Targets:", targets)*/
-
 	forest := RF.BuildForest(inputs, targets, 10, 500, len(train_inputs[0])) //100 trees
 
 	test_inputs = train_inputs
@@ -89,15 +85,107 @@ func main() {
 
 	fmt.Println(time.Since(start))
 
-	//fmt.Println("Test Inputs:", test_inputs[1000])
-	//Probar introduciendo un nuevo dato Female,53.0,0,0,former,27.32,7.0,159,1
+	// Ejecutar el menú para ingresar datos manualmente
+	for {
+		fmt.Println("---- Menú de Predicción de Diabetes ----")
+		fmt.Println("1. Ingresar datos manualmente")
+		fmt.Println("2. Salir")
+		fmt.Print("Seleccione una opción: ")
+
+		reader := bufio.NewReader(os.Stdin)
+		choice, _ := reader.ReadString('\n')
+		choice = strings.TrimSpace(choice)
+
+		if choice == "1" {
+			input := inputData()
+			fmt.Println("Datos ingresados:", input)
+			prob := forest.Predicate(input)
+			fmt.Printf("Predicción: %s\n", prob)
+		} else if choice == "2" {
+			break
+		} else {
+			fmt.Println("Opción inválida, intente nuevamente.")
+		}
+	}
 	//imprimir test
-	fmt.Print("Test Input (Not diabetic): ")
+	/*fmt.Print("Test Input (Not diabetic): ")
 	fmt.Println("Male, 15.0, 0, 0, never, 30.36, 6.1, 200")
 	fmt.Println("Prediction:", forest.Predicate([]interface{}{"Male", "15.0", "0", "0", "never", "30.36", "6.1", "200"}))
 
 	fmt.Print("Test Input (Diabetic): ")
 	fmt.Println("Female, 53.0, 0, 0, former, 27.32, 7.0, 159")
 	fmt.Println("Prediction:", forest.Predicate([]interface{}{"Female", "53.0", "0", "0", "former", "27.32", "7.0", "159"}))
-	//fmt.Println("Prediction:", forest.Predicate(test_inputs[2]))
+	//fmt.Println("Prediction:", forest.Predicate(test_inputs[2]))*/
+}
+
+// Función para ingresar datos manualmente
+func inputData() []interface{} {
+	reader := bufio.NewReader(os.Stdin)
+
+	fmt.Print("Ingrese género (F/M): ")
+	genderInput, _ := reader.ReadString('\n')
+	genderInput = strings.TrimSpace(genderInput)
+
+	var gender string
+	if strings.ToUpper(genderInput) == "F" {
+		gender = "Female"
+	} else if strings.ToUpper(genderInput) == "M" {
+		gender = "Male"
+	}
+
+	fmt.Print("Ingrese edad: ")
+	ageStr, _ := reader.ReadString('\n')
+	age := strings.TrimSpace(ageStr)
+
+	fmt.Print("Ingrese hipertensión (0 o 1): ")
+	hypertensionStr, _ := reader.ReadString('\n')
+	hypertension := strings.TrimSpace(hypertensionStr)
+
+	fmt.Print("Ingrese enfermedad cardíaca (0 o 1): ")
+	heartDiseaseStr, _ := reader.ReadString('\n')
+	heartDisease := strings.TrimSpace(heartDiseaseStr)
+
+	fmt.Print("Ingrese historial de fumar (0: Nunca, 1: Sin informacion, 2: Actualmente, 3: No actualmente, 4: Anteriormente, 5: Alguna vez): ")
+	smokingHistoryStr, _ := reader.ReadString('\n')
+	smokingHistory, _ := strconv.Atoi(strings.TrimSpace(smokingHistoryStr))
+
+	var smokingHistoryEng string
+	switch smokingHistory {
+	case 0:
+		smokingHistoryEng = "never"
+	case 1:
+		smokingHistoryEng = "No Info"
+	case 2:
+		smokingHistoryEng = "current"
+	case 3:
+		smokingHistoryEng = "not current"
+	case 4:
+		smokingHistoryEng = "former"
+	case 5:
+		smokingHistoryEng = "ever"
+	}
+
+	fmt.Print("Ingrese BMI: ")
+	bmiStr, _ := reader.ReadString('\n')
+	bmi := strings.TrimSpace(bmiStr)
+
+	fmt.Print("Ingrese nivel HbA1c: ")
+	hba1cLevelStr, _ := reader.ReadString('\n')
+	hba1cLevel := strings.TrimSpace(hba1cLevelStr)
+
+	fmt.Print("Ingrese nivel de glucosa en sangre: ")
+	bloodGlucoseLevelStr, _ := reader.ReadString('\n')
+	bloodGlucoseLevel := strings.TrimSpace(bloodGlucoseLevelStr)
+
+	// Retorna los datos como un slice de interface{}
+	return []interface{}{
+		gender,            // Gender (Female/Male)
+		age,               // Age
+		hypertension,      // Hypertension (0 o 1)
+		heartDisease,      // Heart Disease (0 o 1)
+		smokingHistoryEng, // Smoking History (never/No Info/current/not current/former/ever)
+		bmi,               // BMI
+		hba1cLevel,        // HbA1c Level
+		bloodGlucoseLevel, // Blood Glucose Level
+	}
 }
