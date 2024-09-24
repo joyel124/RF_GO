@@ -17,7 +17,7 @@ import (
 func main() {
 
 	start := time.Now()
-	f, _ := os.Open("diabetes.csv")
+	f, _ := os.Open("diabetesV3.csv")
 	defer f.Close()
 	content, _ := ioutil.ReadAll(f)
 	s_content := string(content)
