@@ -8,10 +8,10 @@ import (
 	//"strconv"
 	"os"
 
+	"tp-test/RF"
+
 	"time"
 	//"math"
-	//importar RF que esta en la misma carpeta
-	"./RF"
 )
 
 func main() {
