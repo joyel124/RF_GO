@@ -80,7 +80,7 @@ func main() {
 	for i := 0; i < len(test_inputs); i++ {
 		output := forest.Predicate(test_inputs[i])
 		expect := test_targets[i]
-		//fmt.Println(output,expect)
+		fmt.Println(output, expect)
 		if output != expect {
 			err_count += 1
 		}
@@ -91,6 +91,9 @@ func main() {
 
 	//fmt.Println("Test Inputs:", test_inputs[1000])
 	//Probar introduciendo un nuevo dato Female,53.0,0,0,former,27.32,7.0,159,1
-	fmt.Println("Prediction:", forest.Predicate([]interface{}{"Female", "53.0", "0", "0", "former", "27.32", "7.0", "159", "1"}))
+	//imprimir test
+	fmt.Print("Test Input: ")
+	fmt.Println("Female, 53.0, 0, 0, former, 27.32, 7.0, 159")
+	fmt.Println("Prediction:", forest.Predicate([]interface{}{"Female", "53.0", "0", "0", "former", "27.32", "7.0", "159"}))
 	//fmt.Println("Prediction:", forest.Predicate(test_inputs[2]))
 }
