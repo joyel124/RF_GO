@@ -122,60 +122,145 @@ func main() {
 func inputData() []interface{} {
 	reader := bufio.NewReader(os.Stdin)
 
-	fmt.Print("Ingrese género (F/M): ")
-	genderInput, _ := reader.ReadString('\n')
-	genderInput = strings.TrimSpace(genderInput)
-
+	// Validar género
 	var gender string
-	if strings.ToUpper(genderInput) == "F" {
-		gender = "Female"
-	} else if strings.ToUpper(genderInput) == "M" {
-		gender = "Male"
+	for {
+		fmt.Print("Ingrese género (F/M): ")
+		genderInput, _ := reader.ReadString('\n')
+		genderInput = strings.TrimSpace(genderInput)
+
+		if strings.ToUpper(genderInput) == "F" {
+			gender = "Female"
+			break
+		} else if strings.ToUpper(genderInput) == "M" {
+			gender = "Male"
+			break
+		} else {
+			fmt.Println("Entrada inválida. Por favor, ingrese 'F' o 'M'.")
+		}
 	}
 
-	fmt.Print("Ingrese edad: ")
-	ageStr, _ := reader.ReadString('\n')
-	age := strings.TrimSpace(ageStr)
+	// Validar edad
+	var age string
+	for {
+		fmt.Print("Ingrese edad: ")
+		ageStr, _ := reader.ReadString('\n')
+		age = strings.TrimSpace(ageStr)
 
-	fmt.Print("Ingrese hipertensión (0 o 1): ")
-	hypertensionStr, _ := reader.ReadString('\n')
-	hypertension := strings.TrimSpace(hypertensionStr)
+		if _, err := strconv.ParseFloat(age, 64); err == nil {
+			break
+		} else {
+			fmt.Println("Entrada inválida. Por favor, ingrese una edad válida.")
+		}
+	}
 
-	fmt.Print("Ingrese enfermedad cardíaca (0 o 1): ")
-	heartDiseaseStr, _ := reader.ReadString('\n')
-	heartDisease := strings.TrimSpace(heartDiseaseStr)
+	// Validar hipertensión
+	var hypertension string
+	for {
+		fmt.Print("Ingrese hipertensión (0 o 1): ")
+		hypertensionStr, _ := reader.ReadString('\n')
+		hypertension = strings.TrimSpace(hypertensionStr)
 
-	fmt.Print("Ingrese historial de fumar (0: Nunca, 1: Sin informacion, 2: Actualmente, 3: No actualmente, 4: Anteriormente, 5: Alguna vez): ")
-	smokingHistoryStr, _ := reader.ReadString('\n')
-	smokingHistory, _ := strconv.Atoi(strings.TrimSpace(smokingHistoryStr))
+		if hypertension == "0" || hypertension == "1" {
+			break
+		} else {
+			fmt.Println("Entrada inválida. Por favor, ingrese '0' o '1'.")
+		}
+	}
 
+	// Validar enfermedad cardíaca
+	var heartDisease string
+	for {
+		fmt.Print("Ingrese enfermedad cardíaca (0 o 1): ")
+		heartDiseaseStr, _ := reader.ReadString('\n')
+		heartDisease = strings.TrimSpace(heartDiseaseStr)
+
+		if heartDisease == "0" || heartDisease == "1" {
+			break
+		} else {
+			fmt.Println("Entrada inválida. Por favor, ingrese '0' o '1'.")
+		}
+	}
+
+	// Validar historial de fumar
+	var smokingHistory int
 	var smokingHistoryEng string
-	switch smokingHistory {
-	case 0:
-		smokingHistoryEng = "never"
-	case 1:
-		smokingHistoryEng = "No Info"
-	case 2:
-		smokingHistoryEng = "current"
-	case 3:
-		smokingHistoryEng = "not current"
-	case 4:
-		smokingHistoryEng = "former"
-	case 5:
-		smokingHistoryEng = "ever"
+
+	for {
+		fmt.Print("Ingrese historial de fumar (0: Nunca, 1: Sin información, 2: Actualmente, 3: No actualmente, 4: Anteriormente, 5: Alguna vez): ")
+		smokingHistoryStr, _ := reader.ReadString('\n')
+
+		// Intentar convertir la entrada a un entero
+		var err error
+		smokingHistory, err = strconv.Atoi(strings.TrimSpace(smokingHistoryStr))
+
+		// Verificar si hubo un error en la conversión o si el número está fuera del rango permitido
+		if err != nil || smokingHistory < 0 || smokingHistory > 5 {
+			fmt.Println("Entrada inválida. Por favor, ingrese un número entre 0 y 5.")
+			continue // Vuelve a solicitar la entrada
+		}
+
+		// Conversión del historial de fumar a inglés
+		switch smokingHistory {
+		case 0:
+			smokingHistoryEng = "never"
+		case 1:
+			smokingHistoryEng = "No Info"
+		case 2:
+			smokingHistoryEng = "current"
+		case 3:
+			smokingHistoryEng = "not current"
+		case 4:
+			smokingHistoryEng = "former"
+		case 5:
+			smokingHistoryEng = "ever"
+		}
+
+		// Si la entrada es válida, puedes salir del bucle
+		break
 	}
 
-	fmt.Print("Ingrese BMI: ")
-	bmiStr, _ := reader.ReadString('\n')
-	bmi := strings.TrimSpace(bmiStr)
+	// Validar BMI
+	var bmi string
+	for {
+		fmt.Print("Ingrese BMI: ")
+		bmiStr, _ := reader.ReadString('\n')
+		bmi = strings.TrimSpace(bmiStr)
 
-	fmt.Print("Ingrese nivel HbA1c: ")
-	hba1cLevelStr, _ := reader.ReadString('\n')
-	hba1cLevel := strings.TrimSpace(hba1cLevelStr)
+		if _, err := strconv.ParseFloat(bmi, 64); err == nil {
+			break
+		} else {
+			fmt.Println("Entrada inválida. Por favor, ingrese un BMI válido.")
+		}
+	}
 
-	fmt.Print("Ingrese nivel de glucosa en sangre: ")
-	bloodGlucoseLevelStr, _ := reader.ReadString('\n')
-	bloodGlucoseLevel := strings.TrimSpace(bloodGlucoseLevelStr)
+	// Validar nivel HbA1c
+	var hba1cLevel string
+	for {
+		fmt.Print("Ingrese nivel HbA1c: ")
+		hba1cLevelStr, _ := reader.ReadString('\n')
+		hba1cLevel = strings.TrimSpace(hba1cLevelStr)
+
+		if _, err := strconv.ParseFloat(hba1cLevel, 64); err == nil {
+			break
+		} else {
+			fmt.Println("Entrada inválida. Por favor, ingrese un nivel HbA1c válido.")
+		}
+	}
+
+	// Validar nivel de glucosa en sangre
+	var bloodGlucoseLevel string
+	for {
+		fmt.Print("Ingrese nivel de glucosa en sangre: ")
+		bloodGlucoseLevelStr, _ := reader.ReadString('\n')
+		bloodGlucoseLevel = strings.TrimSpace(bloodGlucoseLevelStr)
+
+		if _, err := strconv.ParseFloat(bloodGlucoseLevel, 64); err == nil {
+			break
+		} else {
+			fmt.Println("Entrada inválida. Por favor, ingrese un nivel de glucosa en sangre válido.")
+		}
+	}
 
 	// Retorna los datos como un slice de interface{}
 	return []interface{}{
