@@ -80,7 +80,7 @@ func main() {
 	for i := 0; i < len(test_inputs); i++ {
 		output := forest.Predicate(test_inputs[i])
 		expect := test_targets[i]
-		fmt.Println(output, expect)
+		//fmt.Println(output, expect)
 		if output != expect {
 			err_count += 1
 		}
