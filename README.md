@@ -2,6 +2,10 @@
 
 Este proyecto implementa un clasificador de diabetes utilizando un bosque aleatorio (Random Forest). El programa entrena el modelo usando un conjunto de datos de diabetes, luego lo evalúa y permite realizar pruebas con datos específicos.
 
+## Diagrama de Gantt
+
+![Diagrama de Gantt](./gantt.png)
+
 ## Estructura del Proyecto
 
 - **`test.go`**: Archivo principal que carga el conjunto de datos de diabetes, entrena el modelo y realiza la evaluación.
@@ -10,7 +14,7 @@ Este proyecto implementa un clasificador de diabetes utilizando un bosque aleato
 ## Requisitos
 
 - Go (Golang) instalado en tu sistema.
-- El archivo de datos `diabetes.csv` en el mismo directorio que el programa.
+- El archivo de datos `diabetesV3.csv` en el mismo directorio que el programa.
 
 ## Instalación
 
@@ -20,7 +24,7 @@ Este proyecto implementa un clasificador de diabetes utilizando un bosque aleato
     cd RF_GO
     ```
 
-2. Asegúrate de que tienes el archivo `diabetes.csv` en el mismo directorio del proyecto. Este archivo debe contener las características y etiquetas para el entrenamiento del modelo.
+2. Asegúrate de que tienes el archivo `diabetesV3.csv` en el mismo directorio del proyecto. Este archivo debe contener las características y etiquetas para el entrenamiento del modelo.
 
 ## Ejecución
 
